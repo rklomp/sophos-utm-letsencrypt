@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# usage: ./update-cert <domain> <utm-object>
+
+cert=$(openssl x509 -in .getssl/$1/$1.crt -text| sed ':a;N;$!ba;s/\n/\\n/g')
+key=$(cat .getssl/$1/$1.key | sed ':a;N;$!ba;s/\n/\\n/g')
+
+echo "OBJS
+ca
+host_key_cert
+$2
+certificate=\"$cert\"
+key=\"$key\"
+write" | /usr/local/bin/confd-client.plx -batch
+
+sleep 5
