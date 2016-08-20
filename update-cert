@@ -11,6 +11,6 @@ host_key_cert
 $2
 certificate=\"$cert\"
 key=\"$key\"
-write" | /usr/local/bin/confd-client.plx -batch
+write" | /usr/local/bin/confd-client.plx -batch > /dev/null
 
 sleep 5
