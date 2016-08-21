@@ -28,6 +28,8 @@ cc = '/usr/local/bin/confd-client.plx'
 domain = sys.argv[1]
 cert_ref=sys.argv[2]
 
+print "Writing certificate for %s to object %s" % (domain, cert_ref)
+
 cert=subprocess.check_output("/usr/bin/openssl x509 -in /root/.getssl/%s/%s.crt -text" % (domain,domain), shell=True).replace('\n','\\n')
 key=open("/root/.getssl/%s/%s.key" % (domain,domain)).read().replace('\n','\\n')
 
