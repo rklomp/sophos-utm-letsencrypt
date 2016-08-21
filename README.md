@@ -61,7 +61,7 @@ SSLCONF="/root/openssl.cnf"
 
 `vi ~/.getssl/yourdomain.com/getssl.cfg`
 
-Set ACL; The directory where to copy acme challenge file to. This should be the server that is serving the yourdomain.com webpages. Also create the folder on the server and test if http://yourdomain.com/.well-known/acme-challenge/ is reachable.
+Set ACL; The directory where to copy acme challenge file to. This should be the server that is serving the yourdomain.com webpages. Also create the folder on the server and test if http://yourdomain.com/.well-known/acme-challenge/ is reachable and if you can ssh from the UTM to the server.=, maybe you need to add a firewall allow rule.
 
 `ACL=('ssh:<user>@<server>:/var/www/.well-known/acme-challenge')`
 
