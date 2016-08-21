@@ -16,7 +16,7 @@ chmod +x update-cert
 
 ## Find the certificate reference
 
-Use an existing certificate entry to overwrite, or generate a new one in the webgui (Webserver Protection -> Certificate Management -> Add Certificate...)
+Use an existing certificate entry to overwrite, or generate a new one in the webgui (Webserver Protection -> Certificate Management -> Add Certificate...). Assign this certificate to your virtual webserver.
 
 Get certificate Reference using cc:
 
