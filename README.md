@@ -86,7 +86,7 @@ Testing time...
 
 If everything works correct and your website now uses the new certificate you can continue. If not.. solve it ;)
 
-Note: This is a test certificate that is not a valid signed certificate.
+Note: This is a test certificate that is not a valid signed certificate. The certificate is issued by "fake LE intermediate x1". The next step will make sure you will get a valid signed certificate.
 
 Tip: getssl supports the -d parameter to show debug output
 
