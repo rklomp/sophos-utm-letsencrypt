@@ -59,6 +59,8 @@ ACCOUNT_EMAIL=<your email>
 SSLCONF="/root/openssl.cnf"
 ```
 
+Edit the domain specific config file
+
 `vi ~/.getssl/yourdomain.com/getssl.cfg`
 
 Set RELOAD_CMD; use your domain and the reference you looked up earlier
@@ -66,16 +68,16 @@ Set RELOAD_CMD; use your domain and the reference you looked up earlier
 `RELOAD_CMD="/root/update-cert yourdomain.com REF_CaHosLetsEncryp"`
 
 
-Set ACL; The directory where to copy acme challenge file to. This should be the server that is serving the yourdomain.com webpages. Also create the folder on the server and test if http://yourdomain.com/.well-known/acme-challenge/ is reachable and if you can ssh from the UTM to the server.=, maybe you need to add a firewall allow rule.
+Set ACL; The directory where to copy acme challenge file to. This should be the server that is serving the yourdomain.com webpages. Also create the folder on the server and test if http://yourdomain.com/.well-known/acme-challenge/ is reachable and if you can ssh from the UTM to the server. Maybe you need to add a firewall rulle to allow traffic.
 
 `ACL=('ssh:<user>@<server>:/var/www/.well-known/acme-challenge')`
 
+
+Note: If you use SSH you need to create a ssh-key using `ssh-keygen` and copy it to your server `ssh-copy-id <user>@<server>`
+
 Tip: If you cannot copy the file to the server serving this domain you can copy it to another server and use Site Path Routing for path /.well-known/acme-challenge/ to this other server.
 
-Tip2: If you use SSH you need to create a ssh-key using `ssh-keygen` and copy it to your server `ssh-copy-id <user>@<server>`
-
-Tip3: Using FTP is also possible, see the example in the config file.
-
+Tip2: Using FTP is also possible, see the example in the config file.
 
 Finally comment out or edit the SANS parameter, it could contain some additional (unwanted) domains. All domains should be resolvable from the outside and have a line in ACL. So for example if the SANS in the yourdomain.com config is set to `SANS=sub.yourdomain.com` the ACL shoud contain two lines, one for the server serving yourdomain.com and one for the server serving sub.yourdomain.com.
 
@@ -92,7 +94,7 @@ Testing time...
 
 If everything works correct and your website now uses the new certificate you can continue. If not.. solve it ;)
 
-Note: This is a test certificate that is not a valid signed certificate. The certificate is issued by "fake LE intermediate x1". The next step will make sure you will get a valid signed certificate.
+Note: **This is a test certificate that is not a valid signed certificate. The certificate is issued by "fake LE intermediate x1". The next step will make sure you will get a valid signed certificate.**
 
 Tip: getssl supports the -d parameter to show debug output
 
