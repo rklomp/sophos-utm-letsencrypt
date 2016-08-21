@@ -1,16 +1,80 @@
-#!/bin/bash
+#!/usr/bin/python
+import subprocess,sys,time
 
-# usage: ./update-cert <domain> <utm-object>
+def openssl_get(domain, param):
+    cmd_param=param
+    if param == "altnames":
+        cmd_param="text"
+    cmd = "openssl x509 -noout -in .getssl/%s/%s.crt -%s" % (domain,domain,cmd_param)
+    value = subprocess.check_output(cmd, shell=True).strip()
+    if param in ['startdate','enddate','fingerprint','serial']:
+        return value.split('=')[1]
+    if param in ['issuer','subject']:
+	return value.split('/')[-1]
+    if param == "altnames":
+        i = iter(value.splitlines())
+        for line in i:
+            if 'X509v3 Subject Alternative Name' in line:
+                return "['%s']"% i.next().strip().replace(", ","','")
+    return value
 
-cert=$(openssl x509 -in .getssl/$1/$1.crt -text| sed ':a;N;$!ba;s/\n/\\n/g')
-key=$(cat .getssl/$1/$1.key | sed ':a;N;$!ba;s/\n/\\n/g')
 
-echo "OBJS
+if not len(sys.argv) == 3:
+    print "Usage %s <domain> <cert_ref>" % sys.argv[0]
+    sys.exit(1)
+
+cc = '/usr/local/bin/confd-client.plx'
+
+domain = sys.argv[1]
+cert_ref=sys.argv[2]
+
+cert=subprocess.check_output("/usr/bin/openssl x509 -in /root/.getssl/%s/%s.crt -text" % (domain,domain), shell=True).replace('\n','\\n')
+key=open("/root/.getssl/%s/%s.key" % (domain,domain)).read().replace('\n','\\n')
+
+cmd = """OBJS
 ca
 host_key_cert
-$2
-certificate=\"$cert\"
-key=\"$key\"
-write" | /usr/local/bin/confd-client.plx -batch > /dev/null
+%s
+certificate="%s"
+key="%s"
+write""" % (cert_ref, cert, key)
 
-sleep 5
+cert_object = subprocess.Popen([cc, '-batch'],  stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=cmd)[0]
+
+meta_ref = ''
+for line in cert_object.split("\n"):
+    if "'meta' =>" in line:
+         meta_ref = line.split('>')[1][2:-2]
+
+cmd = """OBJS
+ca
+meta_x509
+%s
+vpn_id="%s"
+startdate="%s"
+enddate="%s"
+fingerprint="%s"
+serial="%s"
+issuer="%s"
+issuer_hash="%s"
+name="%s"
+subject="%s"
+subject_hash="%s"
+subject_alt_names=%s
+write""" % (
+    meta_ref,domain,
+    openssl_get(domain,'startdate'),
+    openssl_get(domain,'enddate'),
+    openssl_get(domain,'fingerprint'),
+    openssl_get(domain,'serial'),
+    openssl_get(domain,'issuer'),
+    openssl_get(domain,'issuer_hash'),
+    openssl_get(domain,'subject'),
+    openssl_get(domain,'subject'),
+    openssl_get(domain,'subject_hash'),
+    openssl_get(domain,'altnames')
+)
+
+subprocess.Popen([cc, '-batch'],  stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=cmd)[0]
+
+time.sleep(5)
