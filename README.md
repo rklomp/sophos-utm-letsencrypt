@@ -1,5 +1,9 @@
 # sophos-utm-letsencrypt
 
+## Backup!
+Before you start make a backup of your configuration in case something goes wrong or the wrong certificate is overwritten.
+
+
 ## Get all Files
 
 SSH to you Sophos UTM first and then download everything needed:
