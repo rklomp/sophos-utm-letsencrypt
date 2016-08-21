@@ -61,6 +61,11 @@ SSLCONF="/root/openssl.cnf"
 
 `vi ~/.getssl/yourdomain.com/getssl.cfg`
 
+Set RELOAD_CMD; use your domain and the reference you looked up earlier
+
+`RELOAD_CMD="/root/update-cert yourdomain.com REF_CaHosLetsEncryp"`
+
+
 Set ACL; The directory where to copy acme challenge file to. This should be the server that is serving the yourdomain.com webpages. Also create the folder on the server and test if http://yourdomain.com/.well-known/acme-challenge/ is reachable and if you can ssh from the UTM to the server.=, maybe you need to add a firewall allow rule.
 
 `ACL=('ssh:<user>@<server>:/var/www/.well-known/acme-challenge')`
@@ -71,9 +76,6 @@ Tip2: If you use SSH you need to create a ssh-key using `ssh-keygen` and copy it
 
 Tip3: Using FTP is also possible, see the example in the config file.
 
-Set RELOAD_CMD; use your domain and the reference you looked up earlier
-
-`RELOAD_CMD="/root/update-cert yourdomain.com REF_CaHosLetsEncryp"`
 
 Finally comment out or edit the SANS parameter, it could contain some additional (unwanted) domains. All domains should be resolvable from the outside and have a line in ACL. So for example if the SANS in the yourdomain.com config is set to `SANS=sub.yourdomain.com` the ACL shoud contain two lines, one for the server serving yourdomain.com and one for the server serving sub.yourdomain.com.
 
