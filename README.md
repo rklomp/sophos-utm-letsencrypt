@@ -3,10 +3,21 @@
 ## Backup!
 Before you start make a backup of your configuration in case something goes wrong or the wrong certificate is overwritten.
 
+## Install Verification CA Certificate
+
+Download the let's encrypt intermediate certificate
+https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem
+
+Install it as Verification CA via webadmin (Webserver Protection -> Certificate Management -> Certificate Authority -> New CA...)
+
+I have named it "Let’s Encrypt Authority X3", but you can give it any name you want.
+
+This certificate is then served by the Web Application Firewall when a Let's Encrypt certificate is used to complete the certificate chain and provide better acceptance of the Let's Encrypt certificate.
+
 
 ## Get all Files
 
-SSH to you Sophos UTM first and then download everything needed:
+SSH to you Sophos UTM and then download everything needed:
 
 ```
 sudo su -
