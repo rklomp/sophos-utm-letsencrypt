@@ -22,7 +22,7 @@ SSH to you Sophos UTM and then download everything needed:
 ```
 sudo su -
 cd /root
-wget https://raw.githubusercontent.com/rklomp/getssl/master/getssl --no-check-certificate
+wget https://raw.githubusercontent.com/srvrco/getssl/master/getssl --no-check-certificate
 wget https://raw.githubusercontent.com/rklomp/sophos-utm-letsencrypt/master/update-cert --no-check-certificate
 wget http://web.mit.edu/crypto/openssl.cnf
 chmod +x getssl
