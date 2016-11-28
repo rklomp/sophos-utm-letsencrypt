@@ -5,7 +5,7 @@ def openssl_get(domain, param):
     cmd_param=param
     if param == "altnames":
         cmd_param="text"
-    cmd = "openssl x509 -noout -in .getssl/%s/%s.crt -%s" % (domain,domain,cmd_param)
+    cmd = "openssl x509 -noout -in /root/.getssl/%s/%s.crt -%s" % (domain,domain,cmd_param)
     value = subprocess.check_output(cmd, shell=True).strip()
     if param in ['startdate','enddate','fingerprint','serial']:
         return value.split('=')[1]
