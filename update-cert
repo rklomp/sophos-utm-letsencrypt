@@ -31,7 +31,7 @@ def openssl_get(domain, param):
     if param in ['startdate','enddate','fingerprint','serial']:
         return value.split('=')[1]
     if param in ['issuer','subject']:
-	return value.split('/')[-1]
+    return value.split('/')[-1]
     if param == "altnames":
         i = iter(value.splitlines())
         for line in i:
