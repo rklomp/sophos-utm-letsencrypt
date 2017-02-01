@@ -88,7 +88,7 @@ Note: If you use SSH you need to create a ssh-key using `ssh-keygen` and copy it
 
 Tip: If you cannot copy the file to the server serving this domain you can copy it to another server and use Site Path Routing for path /.well-known/acme-challenge/ to this other server.
 
-Tip2: Using FTP is also possible, see the example in the config file.
+Tip2: Using FTP is also possible, see the example in the config file, but an FTP excutable is not available by default on the Sophos UTM.
 
 Finally comment out or edit the SANS parameter, it could contain some additional (unwanted) domains. All domains should be resolvable from the outside and have a line in ACL. So for example if the SANS in the yourdomain.com config is set to `SANS=sub.yourdomain.com` the ACL shoud contain two lines, one for the server serving yourdomain.com and one for the server serving sub.yourdomain.com.
 
