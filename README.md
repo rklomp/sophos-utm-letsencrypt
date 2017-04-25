@@ -33,10 +33,10 @@ chmod +x update-cert
 
 Use an existing certificate entry to overwrite, or generate a new one in the webgui (Webserver Protection -> Certificate Management -> Add Certificate...). Using the VPN ID type "Hostname". Assign this certificate to your virtual webserver.
 
-Get certificate Reference using cc:
+Get certificate Reference using confd-client:
 
 ```
-#cc
+#/usr/local/bin/confd-client.plx
 127.0.0.1 MAIN > OBJS
 Switched to OBJS mode.
 127.0.0.1 OBJS > ca
