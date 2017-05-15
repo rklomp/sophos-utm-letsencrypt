@@ -20,13 +20,14 @@
 import subprocess,sys,time
 
 cc = '/usr/local/bin/confd-client.plx'
+getssl_dir = '/root/.getssl'
 
 
 def openssl_get(domain, param):
     cmd_param=param
     if param == "altnames":
         cmd_param="text"
-    cmd = "openssl x509 -noout -in /root/.getssl/%s/%s.crt -%s" % (domain,domain,cmd_param)
+    cmd = "openssl x509 -noout -in %s/%s/%s.crt -%s" % (getssl_dir,domain,domain,cmd_param)
     value = subprocess.check_output(cmd, shell=True).strip()
     if param in ['startdate','enddate','fingerprint','serial']:
         return value.split('=')[1]
@@ -43,8 +44,8 @@ def openssl_get(domain, param):
 def update_cert(domain, cert_ref):
     print "Writing certificate for %s to object %s" % (domain, cert_ref)
 
-    cert=subprocess.check_output("/usr/bin/openssl x509 -in /root/.getssl/%s/%s.crt -text" % (domain,domain), shell=True).replace('\n','\\n')
-    key=open("/root/.getssl/%s/%s.key" % (domain,domain)).read().replace('\n','\\n')
+    cert=subprocess.check_output("/usr/bin/openssl x509 -in %s/%s/%s.crt -text" % (getssl_dir,domain,domain), shell=True).replace('\n','\\n')
+    key=open("%s/%s/%s.key" % (getssl_dir,domain,domain)).read().replace('\n','\\n')
 
     # There might be a better solution for this, but I cannot find any documentation on cc.
     cmd = """OBJS
@@ -98,12 +99,14 @@ def update_meta(domain, meta_ref):
 
 
 def main():
-    if not len(sys.argv) == 3:
-        print "Usage %s <domain> <cert_ref>" % sys.argv[0]
+    if not (2 < len(sys.argv) < 5):
+        print "Usage %s <domain> <cert_ref> [getssl_dir]" % sys.argv[0]
         sys.exit(1)
 
     domain = sys.argv[1]
     cert_ref = sys.argv[2]
+	if (len(sys.argv[3]) > 1):
+		getssl_dir = sys.argv[3].rstrip('/')
 
     meta_ref = update_cert(domain,cert_ref)
     update_meta(domain,meta_ref)
