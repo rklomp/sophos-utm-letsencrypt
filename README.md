@@ -129,5 +129,6 @@ Make cronjob:
 
 add a line to run daily:
 
-`0 0 * * * /root/getssl yourdomain.com`
+`33 0 * * * /root/getssl yourdomain.com`
 
+(please use random minute instead of 33)
