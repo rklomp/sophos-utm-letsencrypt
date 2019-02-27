@@ -1,3 +1,8 @@
+This repo is obsolete since Let's Encrypt is now a supported feature
+
+https://community.sophos.com/kb/en-us/132940
+
+
 # sophos-utm-letsencrypt
 
 ## Backup!
